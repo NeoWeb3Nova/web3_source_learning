@@ -1,0 +1,106 @@
+groups:
+  - name: web3-vocab-app
+    rules:
+      # 应用可用性告警
+      - alert: AppDown
+        expr: up{job="web3-vocab-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Web3 Vocab App is down"
+          description: "The Web3 DeFi Vocab Battle application has been down for more than 1 minute."
+
+      # 响应时间告警
+      - alert: HighResponseTime
+        expr: http_request_duration_seconds{quantile="0.95"} > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s for more than 5 minutes."
+
+      # 错误率告警
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} for more than 2 minutes."
+
+      # CPU 使用率告警
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }} for more than 5 minutes."
+
+      # 内存使用率告警
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value }}% on {{ $labels.instance }} for more than 5 minutes."
+
+      # 磁盘空间告警
+      - alert: LowDiskSpace
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low disk space detected"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }} for more than 5 minutes."
+
+  - name: external-services
+    rules:
+      # 外部服务可用性
+      - alert: ExternalServiceDown
+        expr: probe_success == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "External service is down"
+          description: "{{ $labels.instance }} has been down for more than 2 minutes."
+
+      # SSL 证书过期告警
+      - alert: SSLCertExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in {{ $value | humanizeDuration }}."
+
+  - name: performance
+    rules:
+      # 页面加载时间告警
+      - alert: SlowPageLoad
+        expr: probe_http_duration_seconds > 3
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow page load detected"
+          description: "Page load time for {{ $labels.instance }} is {{ $value }}s for more than 5 minutes."
+
+      # 大量并发用户告警
+      - alert: HighConcurrentUsers
+        expr: http_requests_total > 1000
+        for: 1m
+        labels:
+          severity: info
+        annotations:
+          summary: "High concurrent users"
+          description: "Current concurrent users: {{ $value }}"

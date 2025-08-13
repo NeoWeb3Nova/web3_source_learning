@@ -1,0 +1,2 @@
+@echo off
+"C:\Users\almyq\AppData\Local\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\uvx.exe" --from git+https://github.com/oraios/serena serena start-mcp-server --context ide-assistant

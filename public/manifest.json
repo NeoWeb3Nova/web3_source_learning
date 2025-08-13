@@ -1,0 +1,40 @@
+{
+  "name": "Web3.0 DeFi词汇大作战",
+  "short_name": "DeFi词汇",
+  "description": "专为语言学习者设计的Web3.0和DeFi领域词汇学习应用",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3182CE",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "开始学习",
+      "short_name": "学习",
+      "description": "快速开始单词学习",
+      "url": "/"
+    },
+    {
+      "name": "练习测试",
+      "short_name": "练习",
+      "description": "进行词汇练习测试",
+      "url": "/practice"
+    },
+    {
+      "name": "学习进度",
+      "short_name": "进度",
+      "description": "查看学习进度和成就",
+      "url": "/progress"
+    }
+  ]
+}

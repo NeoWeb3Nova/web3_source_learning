@@ -1,0 +1,55 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # Prometheus 自身监控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 应用监控
+  - job_name: 'web3-vocab-app'
+    static_configs:
+      - targets: ['app:80']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Node Exporter (系统指标)
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Nginx 监控
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:9113']
+
+  # 外部服务监控
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://web3-defi-vocab-battle.vercel.app
+        - https://web3-defi-vocab-battle.vercel.app/practice
+        - https://web3-defi-vocab-battle.vercel.app/progress
+        - https://web3-defi-vocab-battle.vercel.app/settings
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Main Bundle",
+    "path": "dist/assets/js/index-*.js",
+    "limit": "15 KB",
+    "gzip": true
+  },
+  {
+    "name": "Vendor Bundle", 
+    "path": "dist/assets/js/vendor-*.js",
+    "limit": "50 KB",
+    "gzip": true
+  },
+  {
+    "name": "UI Bundle",
+    "path": "dist/assets/js/ui-*.js", 
+    "limit": "55 KB",
+    "gzip": true
+  },
+  {
+    "name": "Total JS",
+    "path": "dist/assets/js/*.js",
+    "limit": "150 KB",
+    "gzip": true
+  }
+]

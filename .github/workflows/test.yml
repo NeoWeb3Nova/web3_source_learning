@@ -1,0 +1,147 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run type checking
+      run: npx tsc --noEmit
+
+    - name: Run unit tests
+      run: npm run test:run
+
+    - name: Run component tests
+      run: npm run test:components
+
+    - name: Run hook tests
+      run: npm run test:hooks
+
+    - name: Run service tests
+      run: npm run test:services
+
+    - name: Run context tests
+      run: npm run test:contexts
+
+    - name: Run accessibility tests
+      run: npm run test:accessibility
+
+    - name: Run integration tests
+      run: npm run test:integration
+
+    - name: Generate test coverage
+      run: npm run test:coverage
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+    - name: Run performance tests
+      run: npm run test:performance
+
+    - name: Build application
+      run: npm run build
+
+    - name: Run Lighthouse CI
+      run: |
+        npm install -g @lhci/cli@0.12.x
+        lhci autorun
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  accessibility-audit:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: npm run build
+
+    - name: Serve application
+      run: |
+        npm run preview &
+        sleep 10
+
+    - name: Run accessibility audit
+      run: |
+        npm install -g @axe-core/cli
+        axe http://localhost:4173 --exit
+
+    - name: Run Pa11y accessibility test
+      run: |
+        npm install -g pa11y
+        pa11y http://localhost:4173
+
+  visual-regression:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+
+    - name: Build application
+      run: npm run build
+
+    - name: Run visual regression tests
+      run: npx playwright test
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

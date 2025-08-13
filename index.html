@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Web3.0 DeFi词汇大作战 - 专业的区块链和去中心化金融词汇学习应用，支持离线学习、多种练习模式和进度追踪" />
+    <meta name="keywords" content="Web3, DeFi, 区块链, 词汇学习, 去中心化金融, 加密货币, 学习应用" />
+    <meta name="author" content="Web3 Vocab Team" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://web3-defi-vocab-battle.vercel.app/" />
+    <meta property="og:title" content="Web3.0 DeFi词汇大作战" />
+    <meta property="og:description" content="专业的区块链和去中心化金融词汇学习应用" />
+    <meta property="og:image" content="/favicon.svg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://web3-defi-vocab-battle.vercel.app/" />
+    <meta property="twitter:title" content="Web3.0 DeFi词汇大作战" />
+    <meta property="twitter:description" content="专业的区块链和去中心化金融词汇学习应用" />
+    <meta property="twitter:image" content="/favicon.svg" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3182CE" />
+    <meta name="background-color" content="#ffffff" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- iOS Safari PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DeFi词汇大作战" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    
+    <!-- Android Chrome PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Critical CSS (inline small critical styles here if needed) -->
+    <style>
+      /* Critical loading styles */
+      #root {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3182CE;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    
+    <title>Web3.0 DeFi词汇大作战</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Loading fallback -->
+      <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- PWA Install Button (hidden by default) -->
+    <button id="pwa-install-button" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 1000; padding: 10px 20px; background: #3182CE; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      安装应用
+    </button>
+    
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration is handled in main.tsx -->
+  </body>
+</html>

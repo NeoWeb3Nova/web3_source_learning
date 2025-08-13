@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "serena": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "start-serena.bat"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "list_memories",
+        "read_memory",
+        "list_dir",
+        "activate_project",
+        "check_onboarding_performed",
+        "onboarding",
+        "write_memory",
+        "write_memory",
+        "think_about_task_adherence",
+        "get_symbols_overview",
+        "think_about_whether_you_are_done",
+        "search_for_pattern",
+        "replace_regex",
+        "think_about_collected_information",
+        "find_symbol",
+        "replace_symbol_body",
+        "find_file",
+        "insert_after_symbol",
+        "insert_before_symbol"
+      ]
+    }
+  }
+}

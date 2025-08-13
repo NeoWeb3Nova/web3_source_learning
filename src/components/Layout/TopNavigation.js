@@ -1,0 +1,25 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Box, Flex, Heading, Progress, Text, IconButton, Menu, MenuButton, MenuList, MenuItem, Avatar, Badge, useBreakpointValue, HStack, VStack, } from '@chakra-ui/react';
+import { HamburgerIcon, BellIcon, SettingsIcon } from '@chakra-ui/icons';
+import { useVocabulary } from '@/hooks/useVocabulary';
+import { useProgress } from '@/hooks/useProgress';
+export const TopNavigation = ({ position = 'sticky', top = 0, zIndex = 1000, bg = 'white', borderBottom, borderColor, boxShadow, className, style, testId, }) => {
+    const { stats, currentWord, filteredVocabulary } = useVocabulary();
+    const { userProgress, getTodayStats } = useProgress();
+    const showFullInfo = useBreakpointValue({ base: false, md: true });
+    const logoSize = useBreakpointValue({ base: 'md', md: 'lg' });
+    const spacing = useBreakpointValue({ base: 2, md: 4 });
+    const todayStats = getTodayStats();
+    const dailyGoal = 20;
+    const todayProgress = todayStats ? (todayStats.wordsStudied / dailyGoal) * 100 : 0;
+    const masteredCount = stats?.mastered || 0;
+    const totalCount = stats?.total || 0;
+    const overallProgress = totalCount > 0 ? (masteredCount / totalCount) * 100 : 0;
+    const currentCourse = currentWord?.category || 'DeFi基础';
+    const currentLevel = userProgress?.level || 1;
+    const currentExp = userProgress?.currentLevelExp || 0;
+    const nextLevelExp = userProgress?.nextLevelExp || 100;
+    const levelProgress = nextLevelExp > 0 ? (currentExp / nextLevelExp) * 100 : 0;
+    return (_jsxs(Box, { className: className, style: style, "data-testid": testId, position: position, top: top, zIndex: zIndex, bg: bg, borderBottom: borderBottom, borderColor: borderColor, boxShadow: boxShadow, w: "full", h: "64px", children: [_jsxs(Flex, { align: "center", justify: "space-between", h: "full", px: spacing, maxW: "1200px", mx: "auto", children: [_jsxs(Flex, { align: "center", spacing: spacing, children: [_jsx(IconButton, { "aria-label": "\u6253\u5F00\u83DC\u5355", icon: _jsx(HamburgerIcon, {}), variant: "ghost", size: "sm", display: { base: 'flex', md: 'none' }, mr: 2 }), _jsxs(HStack, { spacing: 3, children: [_jsx(Box, { w: "40px", h: "40px", bg: "primary.500", borderRadius: "lg", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold", fontSize: "lg", children: "W3" }), showFullInfo ? (_jsxs(VStack, { align: "start", spacing: 0, children: [_jsx(Heading, { size: logoSize, color: "gray.800", children: "DeFi\u8BCD\u6C47\u5927\u4F5C\u6218" }), _jsxs(Text, { fontSize: "sm", color: "gray.600", children: [currentCourse, " \u00B7 \u7B2C", currentLevel, "\u7EA7"] })] })) : (_jsx(Heading, { size: logoSize, color: "gray.800", children: "DeFi\u8BCD\u6C47" }))] })] }), showFullInfo && (_jsx(Flex, { align: "center", flex: "1", maxW: "400px", mx: 6, children: _jsxs(VStack, { spacing: 2, w: "full", children: [_jsxs(Flex, { justify: "space-between", w: "full", children: [_jsx(Text, { fontSize: "sm", color: "gray.600", children: "\u4ECA\u65E5\u8FDB\u5EA6" }), _jsxs(Text, { fontSize: "sm", fontWeight: "semibold", color: "primary.600", children: [todayStats?.wordsStudied || 0, "/", dailyGoal] })] }), _jsx(Progress, { value: todayProgress, size: "sm", colorScheme: "primary", w: "full", borderRadius: "full", bg: "gray.100" }), _jsxs(Flex, { justify: "space-between", w: "full", children: [_jsx(Text, { fontSize: "xs", color: "gray.500", children: "\u603B\u638C\u63E1\u5EA6" }), _jsxs(Text, { fontSize: "xs", color: "gray.500", children: [masteredCount, "/", totalCount] })] })] }) })), _jsxs(Flex, { align: "center", spacing: spacing, children: [showFullInfo && (_jsxs(HStack, { spacing: 2, children: [_jsxs(Badge, { colorScheme: "primary", variant: "solid", borderRadius: "full", px: 2, py: 1, children: ["Lv.", currentLevel] }), _jsx(Box, { w: "60px", children: _jsx(Progress, { value: levelProgress, size: "xs", colorScheme: "secondary", borderRadius: "full" }) })] })), _jsx(IconButton, { "aria-label": "\u901A\u77E5", icon: _jsx(BellIcon, {}), variant: "ghost", size: "sm", position: "relative", children: _jsx(Box, { position: "absolute", top: "8px", right: "8px", w: "8px", h: "8px", bg: "red.500", borderRadius: "full", display: "none" }) }), _jsxs(Menu, { children: [_jsx(MenuButton, { children: _jsx(Avatar, { size: "sm", name: "\u7528\u6237", bg: "primary.500", color: "white", cursor: "pointer", _hover: { transform: 'scale(1.05)' }, transition: "transform 0.2s" }) }), _jsxs(MenuList, { children: [_jsx(MenuItem, { icon: _jsx(SettingsIcon, {}), children: "\u8BBE\u7F6E" }), _jsx(MenuItem, { children: "\u4E2A\u4EBA\u8D44\u6599" }), _jsx(MenuItem, { children: "\u5B66\u4E60\u7EDF\u8BA1" }), _jsx(MenuItem, { children: "\u5E2E\u52A9\u4E0E\u53CD\u9988" }), _jsx(MenuItem, { color: "red.500", children: "\u9000\u51FA\u767B\u5F55" })] })] })] })] }), !showFullInfo && (_jsx(Box, { px: 4, pb: 2, children: _jsx(Progress, { value: todayProgress, size: "xs", colorScheme: "primary", borderRadius: "full", bg: "gray.100" }) }))] }));
+};
+export default TopNavigation;
